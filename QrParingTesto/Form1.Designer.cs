@@ -35,21 +35,21 @@
             // 
             // button1
             // 
-            button1.Location = new Point(234, 415);
+            button1.Location = new Point(387, 415);
             button1.Name = "button1";
-            button1.Size = new Size(75, 23);
+            button1.Size = new Size(193, 23);
             button1.TabIndex = 0;
-            button1.Text = "button1";
+            button1.Text = "Read qr code";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(560, 415);
+            button2.Location = new Point(586, 415);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(202, 23);
             button2.TabIndex = 1;
-            button2.Text = "button2";
+            button2.Text = "Read json from bin example";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 

@@ -15,7 +15,6 @@ namespace QrParingTesto
 {
     public partial class Form1 : Form
     {
-        private string imagePath = @"example2.png";
         public Form1()
         {
             InitializeComponent();
@@ -23,7 +22,7 @@ namespace QrParingTesto
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap("example.png");
+            Bitmap bmp = new Bitmap("Resources/example.png");
 
             // Decode the QR code using ZXing
             BarcodeReader reader = new BarcodeReader();
@@ -32,19 +31,32 @@ namespace QrParingTesto
                 PossibleFormats = new List<BarcodeFormat> { BarcodeFormat.QR_CODE }
             };
             Result result = reader.Decode(bmp);
-                    
+
             if (result != null)
             {
+                File.WriteAllText("Resources/example2.bin", result.Text, Encoding.UTF8);
 
-                File.WriteAllText("example2.bin", result.Text, Encoding.ASCII);
-            }            
+
+                using (var gzipStream = new GZipStream(new FileStream("Resources/example2.bin", FileMode.Open), CompressionMode.Decompress))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        gzipStream.CopyTo(memoryStream);
+                        var decompressedData = memoryStream.ToArray();
+
+                        var jsonString = Encoding.UTF8.GetString(decompressedData);
+
+                        richTextBox1.Text = jsonString;
+                    }
+                }
+            }
         }
 
 
-       
+
         private void button2_Click(object sender, EventArgs e)
         {
-            using (var gzipStream = new GZipStream(new FileStream("example.bin", FileMode.Open), CompressionMode.Decompress))
+            using (var gzipStream = new GZipStream(new FileStream("Resources/example.bin", FileMode.Open), CompressionMode.Decompress))
             {
 
 
@@ -57,11 +69,9 @@ namespace QrParingTesto
                     var jsonString = Encoding.UTF8.GetString(decompressedData);
                     Console.WriteLine(jsonString);
 
-                    //File.WriteAllText("example.json", jsonString);
-
                     richTextBox1.Text = jsonString;
                 }
-            }        
+            }
         }
     }
 }
